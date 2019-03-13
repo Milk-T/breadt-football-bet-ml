@@ -11,11 +11,13 @@ import pandas as pd
 class FootballGameInfoPipeline(object):
 
     def open_spider(self, spider):
+        print('FootballGameInfoPipeline.open_spider')
+
         self.df = pd.DataFrame()
         self.detail = pd.DataFrame()
 
     def process_item(self, item, spider):
-        print('process_item...')
+        print('FootballGameInfoPipeline.process_item...')
 
         if type(item) is FSpiderBriefInfo:
             self.df = self.df.append(item.__dict__['_values'], ignore_index=True)

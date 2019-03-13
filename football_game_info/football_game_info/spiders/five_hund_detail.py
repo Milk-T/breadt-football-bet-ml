@@ -50,14 +50,17 @@ class FiveHundDetailSpider(scrapy.Spider):
             result=self._get_result(arr),
         )
 
-        yield items
+        return item
 
     def _fetch_form(self, response, fid, pos, name):
+        arr = []
         for tr in response.xpath('(.//form[@name="%s"])[1]//tbody//tr[@class="tr1"]' % (name)):
-            self._fetch_one(tr, fid, pos)
+            arr.append(self._fetch_one(tr, fid, pos))
 
         for tr in response.xpath('(.//form[@name="%s"])[1]//tbody//tr[@class="tr2"]' % (name)):
-            self._fetch_one(tr, fid, pos)
+            arr.append(self._fetch_one(tr, fid, pos))
+
+        return arr
 
     def _fetch_ex(self, tr, fid, pos, prefix='20'):
         score = ''
@@ -80,7 +83,7 @@ class FiveHundDetailSpider(scrapy.Spider):
             gn=int(arr[0]) + int(arr[1])
         )
 
-        yield item
+        return item
 
 
     def parse(self, response):
@@ -88,10 +91,11 @@ class FiveHundDetailSpider(scrapy.Spider):
 
         fid = response.meta['fid']
 
-        self._fetch_form(response, fid, 'hr10g', 'zhanji_01') # 10
-        self._fetch_form(response, fid, 'vr10g', 'zhanji_00') # 10
-        self._fetch_form(response, fid, 'hrhg', 'zhanji_11') # 10
-        self._fetch_form(response, fid, 'vrvg', 'zhanji_20') # 10
+        result = []
+        result = result + self._fetch_form(response, fid, 'hr10g', 'zhanji_01') # 10
+        result = result + self._fetch_form(response, fid, 'vr10g', 'zhanji_00') # 10
+        result = result + self._fetch_form(response, fid, 'hrhg', 'zhanji_11') # 10
+        result = result + self._fetch_form(response, fid, 'vrvg', 'zhanji_20') # 10
 
         ex_games = [] # 3
 
@@ -99,8 +103,10 @@ class FiveHundDetailSpider(scrapy.Spider):
 
         if element is not None:
             for tr in element.xpath('.//tr[@class="tr1"]'):
-                self._fetch_ex(tr, fid, 'ex', prefix='')
+                result.append(self._fetch_ex(tr, fid, 'ex', prefix=''))
 
             for tr in element.xpath('.//tr[@class="tr2"]'):
-                self._fetch_ex(tr, fid, 'ex', prefix='')
+                result.append(self._fetch_ex(tr, fid, 'ex', prefix=''))
 
+        for item in result:
+            yield item
