@@ -12,9 +12,9 @@ class FiveHundDetailSpider(scrapy.Spider):
     domain = 'https://odds.500.com/fenxi/shuju-%d.shtml'
 
     def start_requests(self):
-        df = df.read_pickle('../data/f.brief.test.pkl')
+        df = pd.read_pickle('../data/f.brief.test.pkl')
         for index, row in df.iterrows():
-            yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse)
+            yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
     def _get_result(self, scores):
         if scores[0] > scores[1]:
@@ -30,64 +30,63 @@ class FiveHundDetailSpider(scrapy.Spider):
                 return content
 
     def _fetch_one(self, tr, fid, pos, prefix='20'):
-
         score = ''
-        scores = tr.xpath('(.//td)[3]//em').extract()
-        for ele in scores:
-            if not isinstance(ele, str):
-                score = score + ele.contents[0]
-            else:
-                score = score + ele
-        arr = score.split(':')
+        scores = tr.xpath('(.//td)[3]//em//text()').extract()
 
-        yield FSpiderReferInfo(
+        for ele in scores:
+            score = score + ele
+
+        arr = score.split(':')
+        item = FSpiderReferInfo(
             fid=fid,
             pos=pos,
             name=tr.xpath('(.//td)[1]/a/text()').extract_first(),
             date=prefix + tr.xpath('(.//td)[2]/text()').extract_first(),
-            host_team=tr.xpath('(.//td)[3]/span[@class=dz-l]/text()').extract_first(),
-            visit_team=tr.xpath('(.//td)[3]/span[@class=dz-r]/text()').extract_first(),
+            host_team=tr.xpath('(.//td)[3]//span[contains(@class, "dz-l")]/text()').extract_first(),
+            visit_team=tr.xpath('(.//td)[3]//span[contains(@class, "dz-r")]/text()').extract_first(),
             gs=int(arr[0]),
             gd=int(arr[1]),
+            gn=int(arr[0]) + int(arr[1]),
             result=self._get_result(arr),
-            gn=int(arr[0]) + int(arr[1])
         )
 
+        yield items
+
     def _fetch_form(self, response, fid, pos, name):
-        trs = response.xpath('(.//form[@name=%s])[0]/tbody//tr' % (name))
+        for tr in response.xpath('(.//form[@name="%s"])[1]//tbody//tr[@class="tr1"]' % (name)):
+            self._fetch_one(tr, fid, pos)
 
-        for tr in trs.xpath('[@class=tr1]').extract()
-            _fetch_one(tr, fid, pos)
-
-        for tr in trs.xpath('[@class=tr2]').extract()
-            _fetch_one(tr, fid, pos)
+        for tr in response.xpath('(.//form[@name="%s"])[1]//tbody//tr[@class="tr2"]' % (name)):
+            self._fetch_one(tr, fid, pos)
 
     def _fetch_ex(self, tr, fid, pos, prefix='20'):
         score = ''
-        scores = tr.xpath('(.//td)[3]//em').extract()
+        scores = tr.xpath('(.//td)[3]//em//text()').extract()
+
         for ele in scores:
-            if not isinstance(ele, str):
-                score = score + ele.contents[0]
-            else:
-                score = score + ele
+            score = score + ele
         arr = score.split(':')
 
-        yield FSpiderReferInfo(
+        item =  FSpiderReferInfo(
             fid=fid,
             pos=pos,
             name=tr.xpath('(.//td)[1]/a/text()').extract_first(),
             date=prefix + tr.xpath('(.//td)[2]/text()').extract_first(),
-            host_team=self._get_str(tr.xpath('(.//td)[3]/span[@class=dz-l]/text()').extract()),
-            visit_team=self._get_str(tr.xpath('(.//td)[3]/span[@class=dz-r]/text()').extract()),
+            host_team=tr.xpath('(.//td)[3]//span[contains(@class, "dz-l")]/text()').extract_first(),
+            visit_team=tr.xpath('(.//td)[3]//span[contains(@class, "dz-r")]/text()').extract_first(),
             gs=int(arr[0]),
             gd=int(arr[1]),
             result=self._get_result(arr),
             gn=int(arr[0]) + int(arr[1])
         )
+
+        yield item
 
 
     def parse(self, response):
         print(response.url)
+
+        fid = response.meta['fid']
 
         self._fetch_form(response, fid, 'hr10g', 'zhanji_01') # 10
         self._fetch_form(response, fid, 'vr10g', 'zhanji_00') # 10
@@ -96,14 +95,12 @@ class FiveHundDetailSpider(scrapy.Spider):
 
         ex_games = [] # 3
 
-        element = response.xpath('.//div[@id=team_jiaozhan]//table')
+        element = response.xpath('.//div[@id="team_jiaozhan"]//table')
 
         if element is not None:
-            trs = element.xpath('.//tr')
-
-            for tr in trs.xpath('[@class=tr1]').extract()
+            for tr in element.xpath('.//tr[@class="tr1"]'):
                 self._fetch_ex(tr, fid, 'ex', prefix='')
 
-            for tr in trs.xpath('[@class=tr2]').extract()
+            for tr in element.xpath('.//tr[@class="tr2"]'):
                 self._fetch_ex(tr, fid, 'ex', prefix='')
 

@@ -21,7 +21,7 @@ class FSpiderBriefInfo(scrapy.Item):
     offset = scrapy.Field()
     time = scrapy.Field()
 
-class FSpiderReferInfo(object):
+class FSpiderReferInfo(scrapy.Item):
     """docstring for FSpiderReferInfo"""
     
     fid = scrapy.Field()
