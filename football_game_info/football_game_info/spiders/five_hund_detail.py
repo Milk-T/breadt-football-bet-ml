@@ -12,7 +12,7 @@ class FiveHundDetailSpider(scrapy.Spider):
     domain = 'https://odds.500.com/fenxi/shuju-%d.shtml'
 
     def start_requests(self):
-        df = pd.read_pickle('../data/f.brief.test.pkl')
+        df = pd.read_pickle('../data/f.brief.pkl')
         for index, row in df.iterrows():
             yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
