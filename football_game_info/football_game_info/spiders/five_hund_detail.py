@@ -13,8 +13,10 @@ class FiveHundDetailSpider(scrapy.Spider):
 
     def start_requests(self):
         df = pd.read_pickle('../data/f.brief.pkl')
+        detail = pd.read_pickle('../data/f.refer.pkl')
         for index, row in df.iterrows():
-            yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
+            if len(detail[detail['fid'] == row['fid']]) == 0:
+                yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
     def _get_result(self, scores):
         if scores[0] > scores[1]:
