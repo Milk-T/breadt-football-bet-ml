@@ -16,7 +16,7 @@ class StockNewsPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, SSpiderBriefInfo):
-            self.df.append(item.__dict__['_values'], ignore_index=True)
+            self.df = self.df.append(item.__dict__['_values'], ignore_index=True)
 
         return item
 
