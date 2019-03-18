@@ -22,6 +22,16 @@ class FSpiderBriefInfo(scrapy.Item):
     time = scrapy.Field()
     result = scrapy.Field() 
 
+class FSpiderPredictInfo(scrapy.Item):
+    fid = scrapy.Field()
+    status = scrapy.Field()
+    game = scrapy.Field()
+    turn = scrapy.Field()
+    home_team = scrapy.Field()
+    visit_team = scrapy.Field()
+    offset = scrapy.Field()
+    time = scrapy.Field()
+
 class FSpiderReferInfo(scrapy.Item):
     """docstring for FSpiderReferInfo"""
     

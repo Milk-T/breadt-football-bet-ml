@@ -3,37 +3,27 @@ import scrapy
 import datetime
 import json
 from urllib.parse import urlencode
-from ..items import FSpiderBriefInfo
+from ..items import FSpiderPredictInfo
 
-class FiveHundSpider(scrapy.Spider):
-    name = "five_hund"
-    allowed_domains = ["500.com"]
-    start_urls = ['http://live.500.com/']
+class FiveHundPredictSpider(scrapy.Spider):
+    name = 'five_hund_predict'
+    allowed_domains = ['500.com']
+    start_urls = ['http://500.com/']
 
     domain = 'http://live.500.com/'
 
-    # 完全初始化 - 从2011年开始爬
-    def start_requests(self):
-        current_date = datetime.datetime.now()
-        fork_date = datetime.datetime(2011, 7, 1, 0, 0, 0, 100000)
-        date_list = []
-        while((current_date - fork_date).days > 1):
-            date_list.append(fork_date)
-            fork_date = fork_date + datetime.timedelta(days=1)
-
-        for bet_date in date_list:
-            yield scrapy.Request(url=self.domain+'?'+ urlencode({'e': bet_date.strftime("%Y-%m-%d")}),
-                                 callback=self.parse,
-                                 meta={"year": bet_date.year})
 
     # 增量获取前1日数据，每天晚上5点运行
-    # def start_requests(self):
-    #     current_date = datetime.datetime.now()
-    #     fork_date = current_date - datetime.timedelta(days=1)
+    def start_requests(self):
+        current_date = datetime.datetime.now()
 
-    #     yield scrapy.Request(url=self.domain+'?'+ urlencode({'e': bet_date.strftime("%Y-%m-%d")}),
-    #                          callback=self.parse,
-    #                          meta={"year": fork_date.year})
+        # yield scrapy.Request(url=self.domain+'?'+ urlencode({'e': current_date.strftime("%Y-%m-%d")}),
+        #                      callback=self.parse,
+        #                      meta={"year": current_date.year})
+
+        yield scrapy.Request(url=self.domain,
+                             callback=self.parse,
+                             meta={"year": current_date.year})
 
     def _get_result(self, gs, gd):
         if gs > gd:
@@ -57,9 +47,9 @@ class FiveHundSpider(scrapy.Spider):
             if len(tds) < 5:
                 continue
 
-            status = tds[4].xpath('./span/text()').extract_first()
+            status = tds[4].xpath('./text()').extract_first()
 
-            if status is None or status != u'完':
+            if status is None or status != u'未':
                 continue
 
             fid = tr.xpath('@fid').extract_first()
@@ -77,19 +67,15 @@ class FiveHundSpider(scrapy.Spider):
             game_date = str(response.meta['year']) + '-' + tds[3].xpath('./text()').extract_first() + ':00'
             game_date_arr = game_date.split(' ')
 
-            item = FSpiderBriefInfo(
+            item = FSpiderPredictInfo(
                 fid = int(fid),
                 status = status,
                 game = game,
                 turn = turn,
                 home_team = home_team,
                 visit_team = visit_team,
-                gs = int(gs),
-                gd = int(gd),
-                gn = int(gs)+int(gd),
                 offset = a_group[1].xpath('./text()').extract_first(),
                 time = game_date_arr[0],
-                result=self._get_result(int(gs), int(gd))
             )
 
             yield item

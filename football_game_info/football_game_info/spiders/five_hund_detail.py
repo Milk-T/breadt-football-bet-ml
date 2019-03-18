@@ -2,6 +2,7 @@
 import scrapy
 import pandas as pd
 from ..items import FSpiderReferInfo
+import pymysql.cursors
 
 
 class FiveHundDetailSpider(scrapy.Spider):
@@ -21,6 +22,11 @@ class FiveHundDetailSpider(scrapy.Spider):
         # for index, row in df.iterrows():
         #     if len(detail[detail['fid'] == row['fid']]) == 0:
         #         yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
+
+    # def start_requests(self):
+    #     df = pd.read_csv('../data/breadt_football_game_daily_20190318.csv')
+    #     for index, row in df.iterrows():
+    #         yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
     def _get_result(self, scores):
         if scores[0] > scores[1]:
