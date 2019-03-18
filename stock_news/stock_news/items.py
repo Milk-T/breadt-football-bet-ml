@@ -12,3 +12,7 @@ class SSpiderBriefInfo(scrapy.Item):
     code = scrapy.Field()
     name = scrapy.Field()
     full_name = scrapy.Field()
+
+class SSpiderInfoBriefInfo(scrapy.Item):
+	link = scrapy.Field()
+	title = scrapy.Field()
