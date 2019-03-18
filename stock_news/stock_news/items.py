@@ -8,7 +8,7 @@
 import scrapy
 
 
-class StockNewsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class SSpiderBriefInfo(scrapy.Item):
+    code = scrapy.Field()
+    name = scrapy.Field()
+    full_name = scrapy.Field()
