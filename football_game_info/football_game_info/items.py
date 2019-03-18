@@ -20,6 +20,7 @@ class FSpiderBriefInfo(scrapy.Item):
     gn = scrapy.Field()
     offset = scrapy.Field()
     time = scrapy.Field()
+    result = scrapy.Field() 
 
 class FSpiderReferInfo(scrapy.Item):
     """docstring for FSpiderReferInfo"""
@@ -34,4 +35,3 @@ class FSpiderReferInfo(scrapy.Item):
     gd = scrapy.Field()
     result = scrapy.Field()
     gn = scrapy.Field()
-        

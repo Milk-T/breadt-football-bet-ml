@@ -14,7 +14,7 @@ class FiveHundSpider(scrapy.Spider):
 
     def start_requests(self):
         current_date = datetime.datetime.now()
-        fork_date = datetime.datetime(2011, 1, 1, 0, 0, 0, 100000)
+        fork_date = datetime.datetime(2011, 7, 1, 0, 0, 0, 100000)
         date_list = []
         while((current_date - fork_date).days > 1):
             date_list.append(fork_date)
@@ -22,7 +22,16 @@ class FiveHundSpider(scrapy.Spider):
 
         for bet_date in date_list:
             yield scrapy.Request(url=self.domain+'?'+ urlencode({'e': bet_date.strftime("%Y-%m-%d")}),
-                                 callback=self.parse)
+                                 callback=self.parse,
+                                 meta={"year": fork_date.year})
+
+    def _get_result(self, gs, gd):
+        if gs > gd:
+            return 2
+        elif gs == gd:
+            return 1
+        else:
+            return 0
 
             
     def parse(self, response):
@@ -65,7 +74,8 @@ class FiveHundSpider(scrapy.Spider):
                 gd = int(gd),
                 gn = int(gs)+int(gd),
                 offset = a_group[1].xpath('./text()').extract_first(),
-                time = tds[3].xpath('./text()').extract_first()
+                time = str(response.meta['year']) + '-' + tds[3].xpath('./text()').extract_first() + ':00',
+                result=self._get_result(int(gs), int(gd))
             )
 
             yield item

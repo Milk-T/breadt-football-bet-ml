@@ -12,11 +12,15 @@ class FiveHundDetailSpider(scrapy.Spider):
     domain = 'https://odds.500.com/fenxi/shuju-%d.shtml'
 
     def start_requests(self):
-        df = pd.read_pickle('../data/f.brief.pkl')
-        detail = pd.read_pickle('../data/f.refer.pkl')
+        df = pd.read_csv('../data/breadt_football_game_diff.csv')
         for index, row in df.iterrows():
-            if len(detail[detail['fid'] == row['fid']]) == 0:
-                yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
+            yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
+
+        # df = pd.read_pickle('../data/f.brief.pkl')
+        # detail = pd.read_pickle('../data/f.refer.pkl')
+        # for index, row in df.iterrows():
+        #     if len(detail[detail['fid'] == row['fid']]) == 0:
+        #         yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
     def _get_result(self, scores):
         if scores[0] > scores[1]:
