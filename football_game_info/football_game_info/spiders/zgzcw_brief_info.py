@@ -14,7 +14,7 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
     # 完全初始化 - 从2011年开始爬
     def start_requests(self):
         current_date = datetime.datetime.now()
-        fork_date = datetime.datetime(2011, 4, 1, 0, 0, 0, 100000)
+        fork_date = datetime.datetime(2014, 1, 1, 0, 0, 0, 100000)
         # fork_date = datetime.datetime(2019, 4, 8, 0, 0, 0, 100000)
 
         date_list = []
