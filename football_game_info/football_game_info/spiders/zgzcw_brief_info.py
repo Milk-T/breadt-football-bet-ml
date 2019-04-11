@@ -51,8 +51,8 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
             goals_block = tds[6].xpath('.//span/text()').extract_first()
             goals = goals_block.split('-')
 
-            gs = goals[0]
-            gd = goals[1]
+            gs = goals[0] if goals[0] is not '' else 0
+            gd = goals[1] if goals[0] is not '' else 0
 
             home_team = tds[5].xpath('.//a/text()').extract_first()
             visit_team = tds[7].xpath('.//a/text()').extract_first()
