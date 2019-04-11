@@ -9,7 +9,7 @@ import scrapy
 
 
 class FSpiderBriefInfo(scrapy.Item):
-    fid = scrapy.Field()
+    matchid = scrapy.Field()
     status = scrapy.Field()
     game = scrapy.Field()
     turn = scrapy.Field()
@@ -18,9 +18,12 @@ class FSpiderBriefInfo(scrapy.Item):
     gs = scrapy.Field()
     gd = scrapy.Field()
     gn = scrapy.Field()
-    offset = scrapy.Field()
     time = scrapy.Field()
-    result = scrapy.Field() 
+    result = scrapy.Field()
+    win_bet_return = scrapy.Field()
+    draw_bet_return = scrapy.Field()
+    lose_bet_return = scrapy.Field()
+
 
 class FSpiderPredictInfo(scrapy.Item):
     fid = scrapy.Field()
@@ -32,9 +35,10 @@ class FSpiderPredictInfo(scrapy.Item):
     offset = scrapy.Field()
     time = scrapy.Field()
 
+
 class FSpiderReferInfo(scrapy.Item):
     """docstring for FSpiderReferInfo"""
-    
+
     fid = scrapy.Field()
     pos = scrapy.Field()
     name = scrapy.Field()
