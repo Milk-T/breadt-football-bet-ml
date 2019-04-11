@@ -16,12 +16,11 @@ class FootballGameInfoPipeline(object):
 
     def connect(self):
         self.connection = pymysql.connect(host='localhost',
-                                     user='root',
-                                     password='breadt@2019',
-                                     db='breadt-football-ml',
-                                     charset='utf8mb4',
-                                     cursorclass=pymysql.cursors.DictCursor)
-
+                                          user='root',
+                                          password='breadt@2019',
+                                          db='breadt-football-ml',
+                                          charset='utf8mb4',
+                                          cursorclass=pymysql.cursors.DictCursor)
 
     def open_spider(self, spider):
         print('FootballGameInfoPipeline.open_spider')
@@ -44,24 +43,24 @@ class FootballGameInfoPipeline(object):
     def process_item(self, item, spider):
         print('FootballGameInfoPipeline.process_item...')
 
-        if isinstance(item, FSpiderBriefInfo):
-            with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `breadt_football_game_list` (`fid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `offset`, `time`, `result`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (item['fid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['gs'], item['gd'], item['gn'], item['offset'], item['time'], item['result']))
+        # if isinstance(item, FSpiderBriefInfo):
+        #     with self.connection.cursor() as cursor:
+        #         sql = "INSERT INTO `breadt_football_game_list` (`fid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `offset`, `time`, `result`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        #         cursor.execute(sql, (item['fid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['gs'], item['gd'], item['gn'], item['offset'], item['time'], item['result']))
 
-            self.connection.commit()
-        elif isinstance(item, FSpiderReferInfo):
-            with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `breadt_football_refer_games` (`fid`, `pos`, `name`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `date`, `result`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (item['fid'], item['pos'], item['name'], item['host_team'], item['visit_team'], item['gs'], item['gd'], item['gn'], item['date'], item['result']))
+        #     self.connection.commit()
+        # elif isinstance(item, FSpiderReferInfo):
+        #     with self.connection.cursor() as cursor:
+        #         sql = "INSERT INTO `breadt_football_refer_games` (`fid`, `pos`, `name`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `date`, `result`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        #         cursor.execute(sql, (item['fid'], item['pos'], item['name'], item['host_team'], item['visit_team'], item['gs'], item['gd'], item['gn'], item['date'], item['result']))
 
-            self.connection.commit()
-        elif isinstance(item, FSpiderPredictInfo):
-            with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `breadt_football_predict_game` (`fid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `offset`, `time`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (item['fid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['offset'], item['time']))
+        #     self.connection.commit()
+        # elif isinstance(item, FSpiderPredictInfo):
+        #     with self.connection.cursor() as cursor:
+        #         sql = "INSERT INTO `breadt_football_predict_game` (`fid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `offset`, `time`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        #         cursor.execute(sql, (item['fid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['offset'], item['time']))
 
-            self.connection.commit()
+        #     self.connection.commit()
 
         # if isinstance(item, FSpiderBriefInfo):
         #     self.df = self.df.append(
