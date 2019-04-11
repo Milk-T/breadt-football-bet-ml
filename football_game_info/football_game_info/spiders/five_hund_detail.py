@@ -14,7 +14,10 @@ class FiveHundDetailSpider(scrapy.Spider):
 
     def start_requests(self):
         df = pd.read_csv('../data/breadt_football_game_diff.csv')
+        df = df.sort_values(by='fid', ascending=False)
+
         for index, row in df.iterrows():
+            print(self.domain  % int(row['fid']))
             yield scrapy.Request(url=self.domain  % int(row['fid']), callback=self.parse, meta={'fid': int(row['fid'])})
 
         # df = pd.read_pickle('../data/f.brief.pkl')

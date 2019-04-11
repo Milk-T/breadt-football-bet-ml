@@ -7,6 +7,14 @@
 
 from scrapy import signals
 
+class FootballGameInfoSpiderProxyMiddleware(object):
+    def process_request(self,request,spider):
+
+        if request.url.startswith("http://"):
+            request.meta['proxy']="http://127.0.0.1:33557"          # http代理
+        elif request.url.startswith("https://"):
+            request.meta['proxy']="http://127.0.0.1:33557"         # https代理
+
 
 class FootballGameInfoSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
