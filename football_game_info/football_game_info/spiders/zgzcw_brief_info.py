@@ -46,7 +46,9 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
 
             game = tds[1].xpath('.//span/text()').extract_first()
             turn = tds[2].xpath('./text()').extract_first()
+
             game_date = tds[3].xpath('@date').extract_first()
+            game_date_arr = game_date.split(' ')
 
             goals_block = tds[6].xpath('.//span/text()').extract_first()
             goals = goals_block.split('-')
@@ -83,8 +85,8 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
                 gs=int(gs),
                 gd=int(gd),
                 gn=int(gs) + int(gd),
-                time=game_date,
-                result=result,
+                time=game_date_arr[0],
+                result=int(result),
                 win_bet_return=win_bet_return,
                 draw_bet_return=draw_bet_return,
                 lose_bet_return=lose_bet_return
