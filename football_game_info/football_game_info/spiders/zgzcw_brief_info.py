@@ -14,8 +14,8 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
     # 完全初始化 - 从2011年开始爬
     def start_requests(self):
         current_date = datetime.datetime.now()
-        # fork_date = datetime.datetime(2011, 4, 1, 0, 0, 0, 100000)
-        fork_date = datetime.datetime(2019, 4, 8, 0, 0, 0, 100000)
+        fork_date = datetime.datetime(2011, 4, 1, 0, 0, 0, 100000)
+        # fork_date = datetime.datetime(2019, 4, 8, 0, 0, 0, 100000)
 
         date_list = []
         while((current_date - fork_date).days > 1):
@@ -77,9 +77,9 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
                 gn=int(gs) + int(gd),
                 time=game_date,
                 result=result,
-                win_bet_return=win_bet_return,
-                draw_bet_return=draw_bet_return,
-                lose_bet_return=lose_bet_return
+                win_bet_return=float(win_bet_return),
+                draw_bet_return=float(draw_bet_return),
+                lose_bet_return=float(lose_bet_return)
             )
 
             yield item
