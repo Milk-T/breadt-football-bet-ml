@@ -62,8 +62,16 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
             spans = tds[10].xpath('(.//div)[3]//span')
 
             win_bet_return = spans[0].xpath('./text()').extract_first()
+            win_bet_return = float(
+                win_bet_return) if win_bet_return is not None else 0.0
+
             draw_bet_return = spans[1].xpath('./text()').extract_first()
+            draw_bet_return = float(
+                draw_bet_return) if draw_bet_return is not None else 0.0
+
             lose_bet_return = spans[2].xpath('./text()').extract_first()
+            lose_bet_return = float(
+                lose_bet_return) if lose_bet_return is not None else 0.0
 
             item = FSpiderBriefInfo(
                 matchid=int(matchid),
@@ -77,9 +85,9 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
                 gn=int(gs) + int(gd),
                 time=game_date,
                 result=result,
-                win_bet_return=float(win_bet_return),
-                draw_bet_return=float(draw_bet_return),
-                lose_bet_return=float(lose_bet_return)
+                win_bet_return=win_bet_return,
+                draw_bet_return=draw_bet_return,
+                lose_bet_return=lose_bet_return
             )
 
             yield item
