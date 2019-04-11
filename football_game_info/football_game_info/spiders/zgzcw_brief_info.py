@@ -61,7 +61,7 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
 
             result = tds[9].xpath('(.//strong)[1]/text()').extract_first()
 
-            spans = tds[10].xpath('(.//div)[3]//span')
+            spans = tds[10].xpath('(.//div)[1]//span')
 
             win_bet_return = spans[0].xpath('./text()').extract_first()
             win_bet_return = float(
