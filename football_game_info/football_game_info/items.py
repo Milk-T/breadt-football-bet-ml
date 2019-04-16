@@ -56,9 +56,7 @@ class FSpiderFeatureInfo(scrapy.Item):
     matchid = scrapy.Field()
 
     h_score = scrapy.Field()
-
-    h_pervious_rank = scrapy.Field()
-    h_current_rank = scrapy.Field()
+    h_rank = scrapy.Field()
 
     h_perf_win = scrapy.Field()
     h_perf_draw = scrapy.Field()
@@ -104,9 +102,7 @@ class FSpiderFeatureInfo(scrapy.Item):
     h_host_7_goal = scrapy.Field()
 
     v_score = scrapy.Field()
-
-    v_pervious_rank = scrapy.Field()
-    v_current_rank = scrapy.Field()
+    v_rank = scrapy.Field()
 
     v_perf_win = scrapy.Field()
     v_perf_draw = scrapy.Field()
