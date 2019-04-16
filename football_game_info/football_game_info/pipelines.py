@@ -133,7 +133,7 @@ class FootballGameInfoPipeline(object):
                     item['h_host_0_goal'], item['h_host_1_goal'], item['h_host_2_goal'], item['h_host_3_goal'], item[
                         'h_host_4_goal'], item['h_host_5_goal'], item['h_host_6_goal'], item['h_host_7_goal'],
 
-                    item['v_score'], item['v_ank'],
+                    item['v_score'], item['v_rank'],
                     item['v_perf_win'], item['v_perf_draw'], item['v_perf_lose'],
                     item['v_host_win'], item['v_host_draw'], item['v_host_lose'],
                     item['v_battle_with_front_10_win'], item['v_battle_with_front_10_draw'], item['v_battle_with_front_10_lose'],
