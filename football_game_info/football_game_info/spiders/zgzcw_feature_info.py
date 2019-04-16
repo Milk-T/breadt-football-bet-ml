@@ -2,6 +2,8 @@
 import scrapy
 import pandas as pd
 from ..items import FSpiderFeatureInfo
+import pymysql.cursors
+
 
 
 class ZgzcwFeatureInfoSpider(scrapy.Spider):
@@ -12,11 +14,20 @@ class ZgzcwFeatureInfoSpider(scrapy.Spider):
     domain = 'http://fenxi.zgzcw.com/%d/zjtz'
 
     def start_requests(self):
-        yield scrapy.Request(
-            url=self.domain % (2406927),
-            callback=self.parse,
-            meta={'matchid': 2406927}
-        )
+        
+        connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+        
+        with connection.cursor() as cursor:
+            sql = 'select matchid from `breadt_football_game_list` where matchid not in (select matchid from `breadt_football_feature_info`);'
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+
+            for row in rows:
+                yield scrapy.Request(
+                    url=self.domain % (row['matchid']),
+                    callback=self.parse,
+                    meta={'matchid': row['matchid']}
+            )
 
     def get_data(self, ele):
         return ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
