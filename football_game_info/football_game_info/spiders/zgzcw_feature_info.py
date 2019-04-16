@@ -33,25 +33,25 @@ class ZgzcwFeatureInfoSpider(scrapy.Spider):
         return ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
 
     def parse(self, response):
-        h_rank = response.xpath(
-            './/div[@class="team-add-info-zd"]/text()').extract_first()
+        # h_rank = response.xpath(
+        #     './/div[@class="team-add-info-zd"]/text()').extract_first()
 
-        h_rank_arr = h_rank.split('  ')
-        if len(h_rank_arr) < 2:
-            return
+        # h_rank_arr = h_rank.split('  ')
+        # if len(h_rank_arr) < 2:
+        #     return
 
-        h_previous_rank = h_rank_arr[0].split('：')[1]
-        h_current_rank = h_rank_arr[1].split('：')[1]
+        # h_previous_rank = h_rank_arr[0].split('：')[1]
+        # h_current_rank = h_rank_arr[1].split('：')[1]
 
-        v_rank = response.xpath(
-            './/div[@class="team-add-info-kd"]/text()').extract_first()
+        # v_rank = response.xpath(
+        #     './/div[@class="team-add-info-kd"]/text()').extract_first()
 
-        v_rank_arr = v_rank.split('  ')
-        if len(v_rank_arr) < 2:
-            return
+        # v_rank_arr = v_rank.split('  ')
+        # if len(v_rank_arr) < 2:
+        #     return
 
-        v_previous_rank = v_rank_arr[0].split('：')[1]
-        v_current_rank = v_rank_arr[1].split('：')[1]
+        # v_previous_rank = v_rank_arr[0].split('：')[1]
+        # v_current_rank = v_rank_arr[1].split('：')[1]
 
         h_containers = response.xpath(
             './/div[@class="zjtz-l"]//div[@class="marb10"]')
@@ -66,10 +66,12 @@ class ZgzcwFeatureInfoSpider(scrapy.Spider):
             h_score = response.xpath('.//div[@class="team-info-h"]/text()').extract_first().replace("\r", "").replace("\t", "").replace("\n", "").strip(),
             v_score = response.xpath('.//div[@class="team-info-v"]/text()').extract_first().replace("\r", "").replace("\t", "").replace("\n", "").strip(),
 
-            h_pervious_rank=h_previous_rank,
-            h_current_rank=h_current_rank,
-            v_pervious_rank=v_previous_rank,
-            v_current_rank=v_current_rank,
+            h_rank = response.xpath('.//div[@class="team-add-info-zd"]/text()').extract_first(),
+            v_rank = response.xpath('.//div[@class="team-add-info-kd"]/text()').extract_first(),
+            # h_pervious_rank=h_previous_rank,
+            # h_current_rank=h_current_rank,
+            # v_pervious_rank=v_previous_rank,
+            # v_current_rank=v_current_rank,
 
             h_perf_win=self.get_data(h_containers[0].xpath('.//li')[0]),
             h_perf_draw=self.get_data(h_containers[0].xpath('.//li')[1]),

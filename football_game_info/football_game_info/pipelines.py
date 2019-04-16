@@ -72,7 +72,7 @@ class FootballGameInfoPipeline(object):
                 (`matchid`, 
 
                 `h_score`, 
-                `h_pervious_rank`, `h_current_rank`, 
+                `h_rank`
 
                 `h_perf_win`, `h_perf_draw`, `h_perf_lose`, 
                 `h_host_win`, `h_host_draw`, `h_host_lose`, 
@@ -88,7 +88,7 @@ class FootballGameInfoPipeline(object):
                 `h_host_0_goal`, `h_host_1_goal`, `h_host_2_goal`, `h_host_3_goal`, `h_host_4_goal`, `h_host_5_goal`, `h_host_6_goal`, `h_host_7_goal`,
 
                 `v_score`, 
-                `v_pervious_rank`, `v_current_rank`, 
+                `v_rank`, 
 
                 `v_perf_win`, `v_perf_draw`, `v_perf_lose`, 
                 `v_host_win`, `v_host_draw`, `v_host_lose`, 
@@ -113,12 +113,12 @@ class FootballGameInfoPipeline(object):
                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                    %s, %s, %s, %s, %s
+                    %s, %s, %s
                 )
                 """
                 cursor.execute(sql, (
                     item['matchid'],
-                    item['h_score'], item['h_pervious_rank'], item['h_current_rank'],
+                    item['h_score'], item['h_rank'],
                     item['h_perf_win'], item['h_perf_draw'], item['h_perf_lose'],
                     item['h_host_win'], item['h_host_draw'], item['h_host_lose'],
                     item['h_battle_with_front_10_win'], item['h_battle_with_front_10_draw'], item['h_battle_with_front_10_lose'],
@@ -133,7 +133,7 @@ class FootballGameInfoPipeline(object):
                     item['h_host_0_goal'], item['h_host_1_goal'], item['h_host_2_goal'], item['h_host_3_goal'], item[
                         'h_host_4_goal'], item['h_host_5_goal'], item['h_host_6_goal'], item['h_host_7_goal'],
 
-                    item['v_score'], item['v_pervious_rank'], item['v_current_rank'],
+                    item['v_score'], item['v_ank'],
                     item['v_perf_win'], item['v_perf_draw'], item['v_perf_lose'],
                     item['v_host_win'], item['v_host_draw'], item['v_host_lose'],
                     item['v_battle_with_front_10_win'], item['v_battle_with_front_10_draw'], item['v_battle_with_front_10_lose'],
