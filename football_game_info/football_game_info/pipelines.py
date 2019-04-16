@@ -72,7 +72,7 @@ class FootballGameInfoPipeline(object):
                 (`matchid`, 
 
                 `h_score`, 
-                `h_rank`
+                `h_rank`,
 
                 `h_perf_win`, `h_perf_draw`, `h_perf_lose`, 
                 `h_host_win`, `h_host_draw`, `h_host_lose`, 
