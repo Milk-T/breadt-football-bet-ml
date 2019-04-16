@@ -145,8 +145,8 @@ class FootballGameInfoPipeline(object):
 
                     item['v_perf_bet_high'], item['v_perf_bet_low'], item['v_host_bet_high'], item['v_host_bet_low'],
                     item['v_host_0_1_goal'], item['v_host_2_3_goal'], item['v_host_ab_4_goal'],
-                    item['v_host_0_goal'], item['v_host_1_goal'], item['v_host_2_goal'], item['v_host_3_goal'], item[
-                        'v_host_4_goal'], item['v_host_5_goal'], item['v_host_6_goal'], item['v_host_7_goal'],
+                    item['v_host_0_goal'], item['v_host_1_goal'], item['v_host_2_goal'], item['v_host_3_goal'],
+                    item['v_host_4_goal'], item['v_host_5_goal'], item['v_host_6_goal'], item['v_host_7_goal'],
                 )
                 )
 
