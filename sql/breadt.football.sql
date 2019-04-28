@@ -130,3 +130,12 @@ CREATE TABLE `breadt_football_feature_info` (
   `v_host_7_goal` int(8) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `breadt_lottery_info` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `game_start_date` text,
+  `issue` int(20) NOT NULL,
+  `matchid` int(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNI_MATCHID` (`matchid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -51,6 +51,13 @@ class FSpiderReferInfo(scrapy.Item):
     gn = scrapy.Field()
 
 
+class FSpiderLotteryInfo(scrapy.Item):
+
+    game_start_date = scrapy.Field()
+    issue = scrapy.Field()
+    matchid = scrapy.Field()
+
+
 class FSpiderFeatureInfo(scrapy.Item):
 
     matchid = scrapy.Field()
