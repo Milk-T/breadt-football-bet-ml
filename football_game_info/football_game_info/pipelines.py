@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from .items import FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo
+from .items import FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo, FSpiderLotteryInfo
 import pandas as pd
 import os
 import random
@@ -62,6 +62,14 @@ class FootballGameInfoPipeline(object):
                 sql = "INSERT INTO `breadt_football_predict_game` (`fid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `offset`, `time`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql, (item['fid'], item['status'], item['game'], item['turn'],
                                      item['home_team'], item['visit_team'], item['offset'], item['time']))
+
+            self.connection.commit()
+
+        elif isinstance(item, FSpiderLotteryInfo):
+            with self.connection.cursor() as cursor:
+                sql = "INSERT INTO `breadt_lottery_info` (`game_start_date`, `issue`, `matchid`) VALUES (%s, %s, %s)"
+                cursor.execute(
+                    sql, (item['game_start_date'], item['issue'], item['matchid']))
 
             self.connection.commit()
 
