@@ -40,6 +40,18 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
                 score = score_arr[index]
                 score_one_arr = score.split('-')
 
+                gn = -1
+                gd = -1
+                gs = -1
+
+                if score_one_arr[0] != '':
+                    gs = int(score_one_arr[0])
+
+                if score_one_arr[1] != '':
+                    gd = int(score_one_arr[1])
+
+                gn = gd + gs
+
                 bet_arr = match['europeSp'].split(' ')
 
                 yield FSpiderLotteryInfo(
@@ -49,11 +61,11 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
                     turn = '',
                     home_team = match['hostNameFull'],
                     visit_team = match['guestNameFull'],
-                    gs = score_one_arr[0],
-                    gd = score_one_arr[1],
-                    gn = int(score_one_arr[0]) + int(score_one_arr[1]),
+                    gs = gs,
+                    gd = gd,
+                    gn = gn,
                     time = match['gameStartDate'],
-                    result = self.get_result(score_one_arr),
+                    result = self.get_result([gs, gd]),
                     win_bet_return = bet_arr[0],
                     draw_bet_return = bet_arr[1],
                     lose_bet_return = bet_arr[2]

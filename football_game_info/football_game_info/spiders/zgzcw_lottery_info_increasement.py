@@ -33,9 +33,30 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
         if len(body) > 0:
             o_json = json.loads(body)
 
-            for match in o_json['matchInfo']:
+            for index, match in enumerate(o_json['matchInfo']):
+                if len(match['zuizhongbifen']) <= 3:
+                    return
+
+                score_str = match['zuizhongbifen']
+                score_arr = score_str.split(';')
+                score = score_arr[index]
+                score_one_arr = score.split('-')
+
+                bet_arr = match['europeSp'].split(' ')
+
                 yield FSpiderLotteryInfo(
-                    game_start_date=match['gameStartDate'],
-                    issue=match['issue'],
-                    matchid=match['playId'],
+                    matchid = match['playId'],
+                    status = "完成",
+                    game = match['leageNameFull'],
+                    turn = '',
+                    home_team = match['hostNameFull'],
+                    visit_team = match['guestNameFull'],
+                    gs = score_one_arr[0],
+                    gd = score_one_arr[1],
+                    gn = int(score_one_arr[0]) + int(score_one_arr[1]),
+                    time = match['gameStartDate'],
+                    result = self.get_result(score_one_arr),
+                    win_bet_return = bet_arr[0],
+                    draw_bet_return = bet_arr[1],
+                    lose_bet_return = bet_arr[2]
                 )
