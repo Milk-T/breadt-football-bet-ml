@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from .items import FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo, FSpiderLotteryInfo
+from .items import FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo, FSpiderLotteryInfo, FSpiderLotteryPredictInfo
 import pandas as pd
 import os
 import random
