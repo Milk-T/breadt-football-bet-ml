@@ -69,7 +69,7 @@ class FSpiderLotteryInfo(scrapy.Item):
     lose_bet_return = scrapy.Field()
     issue = scrapy.Field()
 
-class FSpiderLotteryPredictInfo(object):
+class FSpiderLotteryPredictInfo(scrapy.Item):
 
     matchid = scrapy.Field()
     status = scrapy.Field()
