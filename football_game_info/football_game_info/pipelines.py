@@ -67,8 +67,8 @@ class FootballGameInfoPipeline(object):
 
         elif isinstance(item, FSpiderLotteryInfo):
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `breadt_lottery_info` (`matchid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `time`, `result`, `win_bet_return`, `draw_bet_return`, `lose_bet_return`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (item['matchid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['gs'],
+                sql = "INSERT INTO `breadt_lottery_info` (`matchid`, `issue`, `status`, `game`, `turn`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `time`, `result`, `win_bet_return`, `draw_bet_return`, `lose_bet_return`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (item['matchid'], item['issue'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['gs'],
                                      item['gd'], item['gn'], item['time'], item['result'], item['win_bet_return'], item['draw_bet_return'], item['lose_bet_return']))
 
             self.connection.commit()

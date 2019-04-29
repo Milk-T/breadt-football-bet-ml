@@ -131,11 +131,32 @@ CREATE TABLE `breadt_football_feature_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- CREATE TABLE `breadt_lottery_info` (
+--   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+--   `game_start_date` text,
+--   `issue` int(20) NOT NULL,
+--   `matchid` int(20) NOT NULL,
+--   PRIMARY KEY (`id`),
+--   UNIQUE KEY `UNI_MATCHID` (`matchid`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `breadt_lottery_info` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `game_start_date` text,
-  `issue` int(20) NOT NULL,
-  `matchid` int(20) NOT NULL,
+  `issue` int(8) NOT NULL COMMENT 'lottery轮次',
+  `matchid` bigint(20) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT '',
+  `game` varchar(100) DEFAULT '',
+  `turn` varchar(100) DEFAULT '',
+  `home_team` varchar(255) NOT NULL DEFAULT '',
+  `visit_team` varchar(255) NOT NULL DEFAULT '',
+  `gs` int(4) NOT NULL COMMENT '主队进球数',
+  `gd` int(4) NOT NULL COMMENT '客队进球数',
+  `gn` int(4) NOT NULL COMMENT '总进球数',
+  `time` datetime NOT NULL,
+  `result` int(4) NOT NULL,
+  `win_bet_return` float DEFAULT NULL,
+  `draw_bet_return` float DEFAULT NULL,
+  `lose_bet_return` float DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNI_MATCHID` (`matchid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `UNQ_MATCHID` (`matchid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

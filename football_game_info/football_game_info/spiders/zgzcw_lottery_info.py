@@ -11,13 +11,13 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
     start_urls = ['http://zgzcw.com/']
 
     domain = "http://cp.zgzcw.com/lottery/zcplayvs.action?lotteryId=13&issue=%d&v=%d"
-    num = 14000
 
     def start_requests(self):
         millis = int(round(time.time() * 1000))
-
-        for i in range(1, 201, 1):
-            yield scrapy.Request(url=self.domain % (self.num+i, millis), callback=self.parse, meta={'issue': self.num+i})
+        for i in range(14000, 20000, 1000):
+            num = i
+            for j in range(1, 201, 1):
+                yield scrapy.Request(url=self.domain % (num+j, millis), callback=self.parse, meta={'issue': num+j})
 
     def get_result(self, arr):
         if int(arr[0]) > int(arr[1]):
@@ -59,6 +59,7 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
 
                 yield FSpiderLotteryInfo(
                     matchid = abs(int(match['playId'].replace('-', ''))),
+                    issue = match['issue'],
                     status = "完成",
                     game = match['leageName'].replace('　', ''),
                     turn = '',
