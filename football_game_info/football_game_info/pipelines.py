@@ -67,48 +67,48 @@ class FootballGameInfoPipeline(object):
 
         elif isinstance(item, FSpiderLotteryInfo):
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `breadt_lottery_info` (`game_start_date`, `issue`, `matchid`) VALUES (%s, %s, %s)"
-                cursor.execute(
-                    sql, (item['game_start_date'], item['issue'], item['matchid']))
+                sql = "INSERT INTO `breadt_lottery_info` (`matchid`, `status`, `game`, `turn`, `home_team`, `visit_team`, `gs`, `gd`, `gn`, `time`, `result`, `win_bet_return`, `draw_bet_return`, `lose_bet_return`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (item['matchid'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'], item['gs'],
+                                     item['gd'], item['gn'], item['time'], item['result'], item['win_bet_return'], item['draw_bet_return'], item['lose_bet_return']))
 
             self.connection.commit()
 
         elif isinstance(item, FSpiderFeatureInfo):
             with self.connection.cursor() as cursor:
                 sql = """
-                INSERT INTO `breadt_football_feature_info` 
-                (`matchid`, 
+                INSERT INTO `breadt_football_feature_info`
+                (`matchid`,
 
-                `h_score`, 
+                `h_score`,
                 `h_rank`,
 
-                `h_perf_win`, `h_perf_draw`, `h_perf_lose`, 
-                `h_host_win`, `h_host_draw`, `h_host_lose`, 
-                `h_battle_with_front_10_win`, `h_battle_with_front_10_draw`, `h_battle_with_front_10_lose`, 
-                `h_battle_with_end_10_win`, `h_battle_with_end_10_draw`, `h_battle_with_end_10_lose`, 
+                `h_perf_win`, `h_perf_draw`, `h_perf_lose`,
+                `h_host_win`, `h_host_draw`, `h_host_lose`,
+                `h_battle_with_front_10_win`, `h_battle_with_front_10_draw`, `h_battle_with_front_10_lose`,
+                `h_battle_with_end_10_win`, `h_battle_with_end_10_draw`, `h_battle_with_end_10_lose`,
 
                 `h_perf_gs`, `h_perf_gd`, `h_perf_avg_gs`, `h_perf_avg_gd`,
                 `h_host_gs`, `h_host_gd`, `h_host_avg_gs`, `h_host_avg_gd`,
                 `h_r3_gs`, `h_r3_gd`, `h_r3_avg_gs`, `h_r3_avg_gd`,
 
                 `h_perf_bet_high`, `h_perf_bet_low`, `h_host_bet_high`, `h_host_bet_low`,
-                `h_host_0_1_goal`, `h_host_2_3_goal`, `h_host_ab_4_goal`, 
+                `h_host_0_1_goal`, `h_host_2_3_goal`, `h_host_ab_4_goal`,
                 `h_host_0_goal`, `h_host_1_goal`, `h_host_2_goal`, `h_host_3_goal`, `h_host_4_goal`, `h_host_5_goal`, `h_host_6_goal`, `h_host_7_goal`,
 
-                `v_score`, 
-                `v_rank`, 
+                `v_score`,
+                `v_rank`,
 
-                `v_perf_win`, `v_perf_draw`, `v_perf_lose`, 
-                `v_host_win`, `v_host_draw`, `v_host_lose`, 
-                `v_battle_with_front_10_win`, `v_battle_with_front_10_draw`, `v_battle_with_front_10_lose`, 
-                `v_battle_with_end_10_win`, `v_battle_with_end_10_draw`, `v_battle_with_end_10_lose`, 
+                `v_perf_win`, `v_perf_draw`, `v_perf_lose`,
+                `v_host_win`, `v_host_draw`, `v_host_lose`,
+                `v_battle_with_front_10_win`, `v_battle_with_front_10_draw`, `v_battle_with_front_10_lose`,
+                `v_battle_with_end_10_win`, `v_battle_with_end_10_draw`, `v_battle_with_end_10_lose`,
 
                 `v_perf_gs`, `v_perf_gd`, `v_perf_avg_gs`, `v_perf_avg_gd`,
                 `v_host_gs`, `v_host_gd`, `v_host_avg_gs`, `v_host_avg_gd`,
                 `v_r3_gs`, `v_r3_gd`, `v_r3_avg_gs`, `v_r3_avg_gd`,
 
                 `v_perf_bet_high`, `v_perf_bet_low`, `v_host_bet_high`, `v_host_bet_low`,
-                `v_host_0_1_goal`, `v_host_2_3_goal`, `v_host_ab_4_goal`, 
+                `v_host_0_1_goal`, `v_host_2_3_goal`, `v_host_ab_4_goal`,
                 `v_host_0_goal`, `v_host_1_goal`, `v_host_2_goal`, `v_host_3_goal`, `v_host_4_goal`, `v_host_5_goal`, `v_host_6_goal`, `v_host_7_goal`
 
 

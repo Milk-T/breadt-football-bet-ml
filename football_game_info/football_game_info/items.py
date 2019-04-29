@@ -52,10 +52,24 @@ class FSpiderReferInfo(scrapy.Item):
 
 
 class FSpiderLotteryInfo(scrapy.Item):
-
-    game_start_date = scrapy.Field()
-    issue = scrapy.Field()
+    
     matchid = scrapy.Field()
+    status = scrapy.Field()
+    game = scrapy.Field()
+    turn = scrapy.Field()
+    home_team = scrapy.Field()
+    visit_team = scrapy.Field()
+    gs = scrapy.Field()
+    gd = scrapy.Field()
+    gn = scrapy.Field()
+    time = scrapy.Field()
+    result = scrapy.Field()
+    win_bet_return = scrapy.Field()
+    draw_bet_return = scrapy.Field()
+    lose_bet_return = scrapy.Field()
+    # game_start_date = scrapy.Field()
+    # issue = scrapy.Field()
+    # matchid = scrapy.Field()
 
 
 class FSpiderFeatureInfo(scrapy.Item):
