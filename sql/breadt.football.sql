@@ -160,3 +160,20 @@ CREATE TABLE `breadt_lottery_info` (
   PRIMARY KEY (`id`),
   KEY `UNQ_MATCHID` (`matchid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `breadt_lottery_predict_info` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `issue` int(8) NOT NULL COMMENT 'lottery轮次',
+  `matchid` bigint(20) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT '',
+  `game` varchar(100) DEFAULT '',
+  `turn` varchar(100) DEFAULT '',
+  `home_team` varchar(255) NOT NULL DEFAULT '',
+  `visit_team` varchar(255) NOT NULL DEFAULT '',
+  `time` datetime NOT NULL,
+  `win_bet_return` float DEFAULT NULL,
+  `draw_bet_return` float DEFAULT NULL,
+  `lose_bet_return` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `UNQ_MATCHID` (`matchid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

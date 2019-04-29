@@ -73,6 +73,14 @@ class FootballGameInfoPipeline(object):
 
             self.connection.commit()
 
+        elif isinstance(item, FSpiderLotteryPredictInfo):
+            with self.connection.cursor() as cursor:
+                sql = "INSERT INTO `breadt_lottery_predict_info` (`matchid`, `issue`, `status`, `game`, `turn`, `home_team`, `visit_team`, `time`, `win_bet_return`, `draw_bet_return`, `lose_bet_return`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (item['matchid'], item['issue'], item['status'], item['game'], item['turn'], item['home_team'], item['visit_team'],
+                                     item['time'], item['win_bet_return'], item['draw_bet_return'], item['lose_bet_return']))
+
+            self.connection.commit()
+
         elif isinstance(item, FSpiderFeatureInfo):
             with self.connection.cursor() as cursor:
                 sql = """
