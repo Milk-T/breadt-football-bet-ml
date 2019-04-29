@@ -38,7 +38,6 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
                     return
 
                 bet_arr = match['europeSp'].split(' ')
-                print(bet_arr)
                 if bet_arr[0] == '':
                     return
 
