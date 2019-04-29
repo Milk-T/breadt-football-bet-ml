@@ -2,56 +2,40 @@
 import scrapy
 import pandas as pd
 from ..items import FSpiderFeatureInfo
+import pymysql.cursors
 
-class ZgzcwFeaatureOneInfoSpider(scrapy.Spider):
-    name = 'zgzcw_feaature_one_info'
+class ZgzcwLotteryFeatureInfoSpider(scrapy.Spider):
+    name = 'zgzcw_lottery_feature_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
 
     domain = 'http://fenxi.zgzcw.com/%d/zjtz'
 
     def start_requests(self):
-        matchid = 2406910
-        yield scrapy.Request(url=self.domain % (matchid),callback=self.parse,meta={'matchid': matchid})
+        # matchid = 2406910
+        # yield scrapy.Request(url=self.domain % (matchid),callback=self.parse,meta={'matchid': matchid})
 
-        # connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        #
-        # with connection.cursor() as cursor:
-        #     sql = 'select matchid from `breadt_football_game_list` where matchid not in (select matchid from `breadt_football_feature_info`);'
-        #     cursor.execute(sql)
-        #     rows = cursor.fetchall()
-        #
-        #     for row in rows:
-        #         yield scrapy.Request(
-        #             url=self.domain % (row['matchid']),
-        #             callback=self.parse,
-        #             meta={'matchid': row['matchid']}
-        #     )
+        connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+
+        with connection.cursor() as cursor:
+            sql = 'select matchid from `breadt_lottery_info` where matchid not in (select matchid from `breadt_football_feature_info`);'
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+
+            for row in rows:
+
+                matchid = abs(int(row['matchid']))
+
+                yield scrapy.Request(
+                    url=self.domain % (matchid),
+                    callback=self.parse,
+                    meta={'matchid': matchid}
+                )
 
     def get_data(self, ele):
         return ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
 
     def parse(self, response):
-        # h_rank = response.xpath(
-        #     './/div[@class="team-add-info-zd"]/text()').extract_first()
-
-        # h_rank_arr = h_rank.split('  ')
-        # if len(h_rank_arr) < 2:
-        #     return
-
-        # h_previous_rank = h_rank_arr[0].split('：')[1]
-        # h_current_rank = h_rank_arr[1].split('：')[1]
-
-        # v_rank = response.xpath(
-        #     './/div[@class="team-add-info-kd"]/text()').extract_first()
-
-        # v_rank_arr = v_rank.split('  ')
-        # if len(v_rank_arr) < 2:
-        #     return
-
-        # v_previous_rank = v_rank_arr[0].split('：')[1]
-        # v_current_rank = v_rank_arr[1].split('：')[1]
-
         h_containers = response.xpath(
             './/div[@class="zjtz-l"]//div[@class="marb10"]')
 

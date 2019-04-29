@@ -11,12 +11,13 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
     start_urls = ['http://zgzcw.com/']
 
     domain = "http://cp.zgzcw.com/lottery/zcplayvs.action?lotteryId=13&issue=%d&v=%d"
+    num = 14000
 
     def start_requests(self):
         millis = int(round(time.time() * 1000))
 
         for i in range(1, 201, 1):
-            yield scrapy.Request(url=self.domain % (19000+i, millis), callback=self.parse, meta={'issue': 19000+i})
+            yield scrapy.Request(url=self.domain % (self.num+i, millis), callback=self.parse, meta={'issue': self.num+i})
 
     def get_result(self, arr):
         if int(arr[0]) > int(arr[1]):
@@ -44,23 +45,25 @@ class ZgzcwLotteryInfoSpider(scrapy.Spider):
                 gd = -1
                 gs = -1
 
-                if score_one_arr[0] != '':
+                if score_one_arr[0] != '' and score_one_arr[0] != '*':
                     gs = int(score_one_arr[0])
 
-                if score_one_arr[1] != '':
+                if score_one_arr[1] != '' and score_one_arr[1] != '*':
                     gd = int(score_one_arr[1])
 
                 gn = gd + gs
 
                 bet_arr = match['europeSp'].split(' ')
+                if bet_arr[0] == '':
+                    return
 
                 yield FSpiderLotteryInfo(
-                    matchid = match['playId'],
+                    matchid = abs(int(match['playId'].replace('-', ''))),
                     status = "完成",
-                    game = match['leageNameFull'],
+                    game = match['leageName'].replace('　', ''),
                     turn = '',
-                    home_team = match['hostNameFull'],
-                    visit_team = match['guestNameFull'],
+                    home_team = match['hostName'].replace('　', ''),
+                    visit_team = match['guestName'].replace('　', ''),
                     gs = gs,
                     gd = gd,
                     gn = gn,
