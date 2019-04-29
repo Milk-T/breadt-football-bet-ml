@@ -18,7 +18,7 @@ class ZgzcwLotteryFeatureInfoSpider(scrapy.Spider):
         connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
         with connection.cursor() as cursor:
-            sql = 'select matchid from `breadt_lottery_info` where matchid not in (select matchid from `breadt_football_feature_info`);'
+            sql = 'select matchid from `breadt_lottery_predict_info` where matchid not in (select matchid from `breadt_football_feature_info`);'
             cursor.execute(sql)
             rows = cursor.fetchall()
 
