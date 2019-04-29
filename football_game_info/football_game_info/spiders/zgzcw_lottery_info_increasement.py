@@ -53,5 +53,5 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
                     time=match['gameStartDate'],
                     win_bet_return=bet_arr[0],
                     draw_bet_return=bet_arr[1],
-                    lose_bet_return=bet_arr[2]
+                    lose_bet_return=bet_arr[2],
                 )
