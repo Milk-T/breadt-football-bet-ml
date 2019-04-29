@@ -2,7 +2,7 @@
 import scrapy
 import datetime
 from ..items import FSpiderBriefInfo
-
+import pymysql.cursors
 
 class ZgzcwBriefInfoSpider(scrapy.Spider):
     name = 'zgzcw_brief_info'
@@ -13,22 +13,31 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
 
     # 完全初始化 - 从2011年开始爬
     def start_requests(self):
-        current_date = datetime.datetime.now()
-        fork_date = datetime.datetime(2014, 1, 1, 0, 0, 0, 100000)
-        # fork_date = datetime.datetime(2019, 4, 8, 0, 0, 0, 100000)
+        connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
-        date_list = []
-        while((current_date - fork_date).days > 1):
-            date_list.append(fork_date)
-            fork_date = fork_date + datetime.timedelta(days=1)
+        with connection.cursor() as cursor:
+            sql = 'select max(time) as max_time from `breadt_football_game_list`;'
+            cursor.execute(sql)
+            row = cursor.fetchone()
 
-        for bet_date in date_list:
-            yield scrapy.FormRequest(
-                url=self.domain,
-                callback=self.parse,
-                formdata={'code': '201', 'ajax': 'true',
-                          'date': bet_date.strftime("%Y-%m-%d")}
-            )
+            fork_date = row['max_time']
+            if fork_date is None:
+                fork_date = datetime.datetime(2014, 1, 1, 0, 0, 0, 100000)
+
+            current_date = datetime.datetime.now()
+
+            date_list = []
+            while((current_date - fork_date).days > 1):
+                date_list.append(fork_date)
+                fork_date = fork_date + datetime.timedelta(days=1)
+
+            for bet_date in date_list:
+                yield scrapy.FormRequest(
+                    url=self.domain,
+                    callback=self.parse,
+                    formdata={'code': '201', 'ajax': 'true',
+                              'date': bet_date.strftime("%Y-%m-%d")}
+                )
 
     def parse(self, response):
         trs = response.xpath('.//tr')
