@@ -16,7 +16,6 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
     def start_requests(self):
 
         millis = int(round(time.time() * 1000))
-
         connection = pymysql.connect(host='localhost', user='root', password='breadt@2019',
                                      db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
@@ -33,7 +32,7 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
         if len(body) > 0:
             o_json = json.loads(body)
 
-            for index, match in enumerate(o_json['matchInfo']):
+            for _, match in enumerate(o_json['matchInfo']):
                 if len(match['zuizhongbifen']) > 3:
                     return
 
