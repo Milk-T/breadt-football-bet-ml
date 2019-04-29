@@ -42,7 +42,7 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
                 if bet_arr[0] == '':
                     return
 
-                yield FSpiderLotteryPredictInfo(
+                spider = FSpiderLotteryPredictInfo(
                     matchid=abs(int(match['playId'].replace('-', ''))),
                     issue=match['issue'],
                     status="未开始",
@@ -55,3 +55,5 @@ class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
                     draw_bet_return=bet_arr[1],
                     lose_bet_return=bet_arr[2],
                 )
+
+                yield spider
