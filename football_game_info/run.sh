@@ -1,0 +1,1 @@
+scrapy crawl zgzcw_brief_info
