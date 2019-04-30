@@ -6,8 +6,12 @@ import json
 from ..items import FSpiderLotteryPredictInfo
 
 
-class ZgzcwLotteryInfoIncreasementSpider(scrapy.Spider):
-    name = 'zgzcw_lottery_info_increasement'
+class ZgzcwLotteryPredictInfoSpider(scrapy.Spider):
+    """
+    增量获取胜负彩预测数据
+    """
+
+    name = 'zgzcw_lottery_predict_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
 

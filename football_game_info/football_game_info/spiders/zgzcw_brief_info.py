@@ -5,13 +5,16 @@ from ..items import FSpiderBriefInfo
 import pymysql.cursors
 
 class ZgzcwBriefInfoSpider(scrapy.Spider):
+    """
+    增量获取竞彩列表数据
+    """
+
     name = 'zgzcw_brief_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
 
     domain = 'http://live.zgzcw.com/ls/AllData.action'
 
-    # 完全初始化 - 从2011年开始爬
     def start_requests(self):
         connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 

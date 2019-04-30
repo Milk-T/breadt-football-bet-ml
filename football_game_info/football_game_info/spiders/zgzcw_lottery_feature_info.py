@@ -12,9 +12,6 @@ class ZgzcwLotteryFeatureInfoSpider(scrapy.Spider):
     domain = 'http://fenxi.zgzcw.com/%d/zjtz'
 
     def start_requests(self):
-        # matchid = 2406910
-        # yield scrapy.Request(url=self.domain % (matchid),callback=self.parse,meta={'matchid': matchid})
-
         connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
         with connection.cursor() as cursor:

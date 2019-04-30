@@ -3,10 +3,14 @@ import scrapy
 import pandas as pd
 from ..items import FSpiderFeatureInfo
 import pymysql.cursors
-
+from ..utils import is_blank
 
 
 class ZgzcwFeatureInfoSpider(scrapy.Spider):
+    """
+    增量获取竞彩数据的特征数据
+    """
+
     name = 'zgzcw_feature_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
@@ -14,9 +18,9 @@ class ZgzcwFeatureInfoSpider(scrapy.Spider):
     domain = 'http://fenxi.zgzcw.com/%d/zjtz'
 
     def start_requests(self):
-        
+
         connection = pymysql.connect(host='localhost', user='root', password='breadt@2019', db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        
+
         with connection.cursor() as cursor:
             sql = 'select matchid from `breadt_football_game_list` where matchid not in (select matchid from `breadt_football_feature_info`);'
             cursor.execute(sql)
@@ -30,7 +34,11 @@ class ZgzcwFeatureInfoSpider(scrapy.Spider):
             )
 
     def get_data(self, ele):
-        return ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
+        num = ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
+        if is_blank(num):
+            return 0
+
+        return num
 
     def parse(self, response):
         # h_rank = response.xpath(

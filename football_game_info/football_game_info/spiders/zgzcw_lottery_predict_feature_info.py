@@ -5,8 +5,13 @@ import time
 import json
 from ..items import FSpiderFeatureInfo
 import pandas as pd
+from ..utils import is_blank
 
 class ZgzcwLotteryPredictFeatureInfoSpider(scrapy.Spider):
+    """
+    获取需要预测的比赛特征数据
+    """
+
     name = 'zgzcw_lottery_predict_feature_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
@@ -34,7 +39,11 @@ class ZgzcwLotteryPredictFeatureInfoSpider(scrapy.Spider):
                 )
 
     def get_data(self, ele):
-        return ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
+        num = ele.xpath('span[@class="chang"]/text()').extract_first().replace('[', '').replace(']', '').replace('场', '')
+        if is_blank(num):
+            return 0
+
+        return num
 
     def parse(self, response):
         h_containers = response.xpath(
@@ -161,4 +170,3 @@ class ZgzcwLotteryPredictFeatureInfoSpider(scrapy.Spider):
             v_host_6_goal=self.get_data(v_containers[3].xpath('.//li')[9]),
             v_host_7_goal=self.get_data(v_containers[3].xpath('.//li')[10]),
         )
-

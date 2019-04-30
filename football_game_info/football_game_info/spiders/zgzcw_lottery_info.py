@@ -3,21 +3,42 @@ import scrapy
 import time
 import json
 from ..items import FSpiderLotteryInfo
+import pymysql.cursors
 
 
 class ZgzcwLotteryInfoSpider(scrapy.Spider):
+    """
+    全量获取胜负彩的数据
+    """
+
     name = 'zgzcw_lottery_info'
     allowed_domains = ['zgzcw.com']
     start_urls = ['http://zgzcw.com/']
 
     domain = "http://cp.zgzcw.com/lottery/zcplayvs.action?lotteryId=13&issue=%d&v=%d"
 
+    # 全量接口
+    # def start_requests(self):
+    #     millis = int(round(time.time() * 1000))
+    #     for i in range(14000, 20000, 1000):
+    #         num = i
+    #         for j in range(1, 201, 1):
+    #             yield scrapy.Request(url=self.domain % (num+j, millis), callback=self.parse, meta={'issue': num+j})
+
+    # 增量接口
     def start_requests(self):
+
         millis = int(round(time.time() * 1000))
-        for i in range(14000, 20000, 1000):
-            num = i
-            for j in range(1, 201, 1):
-                yield scrapy.Request(url=self.domain % (num+j, millis), callback=self.parse, meta={'issue': num+j})
+        connection = pymysql.connect(host='localhost', user='root', password='breadt@2019',
+                                     db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+
+        with connection.cursor() as cursor:
+            sql = 'select max(issue) as max_issue from `breadt_lottery_info`;'
+            cursor.execute(sql)
+            row = cursor.fetchone()
+
+            for i in range(int(row['max_issue']), 19201, 1):
+                yield scrapy.Request(url=self.domain % (i, millis), callback=self.parse, meta={'issue': i})
 
     def get_result(self, arr):
         if int(arr[0]) > int(arr[1]):
