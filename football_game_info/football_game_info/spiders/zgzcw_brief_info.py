@@ -30,7 +30,7 @@ class ZgzcwBriefInfoSpider(scrapy.Spider):
             current_date = datetime.datetime.now()
 
             date_list = []
-            while((current_date - fork_date).days > 1):
+            while((current_date - fork_date).days >= 1):
                 date_list.append(fork_date)
                 fork_date = fork_date + datetime.timedelta(days=1)
 
