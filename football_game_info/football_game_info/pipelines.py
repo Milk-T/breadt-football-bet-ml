@@ -354,27 +354,22 @@ class FootballGameInfoPipeline(object):
                 )
 
             self.connection.commit()
-        
+
         elif isinstance(item, FSpiderOddInfo):
             with self.connection.cursor() as cursor:
                 sql = """
-                    "INSERT INTO `breadt_match_odd_info` (
-                        `matchid`, 
-                        `avg_init_win_odd`, `avg_init_draw_odd`, `avg_init_lose_odd`, `avg_new_win_odd`, `avg_new_draw_odd`, `avg_new_lose_odd`, `avg_new_win_rate`, `avg_new_draw_rate`, `avg_new_lose_rate`, `avg_new_win_kelly`, `avg_new_draw_kelly`, `avg_new_lose_kelly`, `avg_pay_rate`,
-                        `max_init_win_odd`, `max_init_draw_odd`, `max_init_lose_odd`, `max_new_win_odd`, `max_new_draw_odd`, `max_new_lose_odd`, `max_new_win_rate`, `max_new_draw_rate`, `max_new_lose_rate`, `max_new_win_kelly`, `max_new_draw_kelly`, `max_new_lose_kelly`, `max_pay_rate`,
-                        `min_init_win_odd`, `min_init_draw_odd`, `min_init_lose_odd`, `min_new_win_odd`, `min_new_draw_odd`, `min_new_lose_odd`, `min_new_win_rate`, `min_new_draw_rate`, `min_new_lose_rate`, `min_new_win_kelly`, `min_new_draw_kelly`, `min_new_lose_kelly`, `min_pay_rate`,
-                        `std_win`, `std_draw`, `std_lose`, `dispersion_win`, `dispersion_draw`, `dispersion_lose`
+                    INSERT INTO `breadt_match_odd_info` (`matchid`,`avg_init_win_odd`, `avg_init_draw_odd`, `avg_init_lose_odd`, `avg_new_win_odd`, `avg_new_draw_odd`, `avg_new_lose_odd`, `avg_new_win_rate`, `avg_new_draw_rate`, `avg_new_lose_rate`, `avg_new_win_kelly`, `avg_new_draw_kelly`, `avg_new_lose_kelly`, `avg_pay_rate`,`max_init_win_odd`, `max_init_draw_odd`, `max_init_lose_odd`, `max_new_win_odd`, `max_new_draw_odd`, `max_new_lose_odd`, `max_new_win_rate`, `max_new_draw_rate`, `max_new_lose_rate`, `max_new_win_kelly`, `max_new_draw_kelly`, `max_new_lose_kelly`, `max_pay_rate`,`min_init_win_odd`, `min_init_draw_odd`, `min_init_lose_odd`, `min_new_win_odd`, `min_new_draw_odd`, `min_new_lose_odd`, `min_new_win_rate`, `min_new_draw_rate`, `min_new_lose_rate`, `min_new_win_kelly`, `min_new_draw_kelly`, `min_new_lose_kelly`, `min_pay_rate`,`std_win`, `std_draw`, `std_lose`, `dispersion_win`, `dispersion_draw`, `dispersion_lose`
                     ) VALUES (
                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s
-                    )
+                    );
                 """
                 # sql = "INSERT INTO `breadt_match_odd_info` (`matchid`, `odd_type`, `init_win_odd`, `init_draw_odd`, `init_lose_odd`, `new_win_odd`, `new_draw_odd`, `new_lose_odd`, `new_win_rate`, `new_draw_rate`, `new_lose_rate`, `new_win_kelly`, `new_draw_kelly`, `new_lose_kelly`, `pay_rate`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql, (
-                    item['matchid'], 
+                    item['matchid'],
                     item['avg_init_win_odd'], item['avg_init_draw_odd'], item['avg_init_lose_odd'], item['avg_new_win_odd'], item['avg_new_draw_odd'], item['avg_new_lose_odd'], item['avg_new_win_rate'], item['avg_new_draw_rate'], item['avg_new_lose_rate'], item['avg_new_win_kelly'], item['avg_new_draw_kelly'], item['avg_new_lose_kelly'], item['avg_pay_rate'],
                     item['max_init_win_odd'], item['max_init_draw_odd'], item['max_init_lose_odd'], item['max_new_win_odd'], item['max_new_draw_odd'], item['max_new_lose_odd'], item['max_new_win_rate'], item['max_new_draw_rate'], item['max_new_lose_rate'], item['max_new_win_kelly'], item['max_new_draw_kelly'], item['max_new_lose_kelly'], item['max_pay_rate'],
                     item['min_init_win_odd'], item['min_init_draw_odd'], item['min_init_lose_odd'], item['min_new_win_odd'], item['min_new_draw_odd'], item['min_new_lose_odd'], item['min_new_win_rate'], item['min_new_draw_rate'], item['min_new_lose_rate'], item['min_new_win_kelly'], item['min_new_draw_kelly'], item['min_new_lose_kelly'], item['min_pay_rate'],

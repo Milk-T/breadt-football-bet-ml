@@ -13,11 +13,11 @@ class ZgzcwOddsInfoSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        connection = pymysql.connect(host='localhost', user='root', password='breadt@2019',
-                                     db='breadt-football-ai', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+        connection = pymysql.connect(host='10.12.86.109', user='root', password='breadt@2019',
+                                     db='breadt-football-ml', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
         with connection.cursor() as cursor:
-            sql = 'select matchid from `breadt_match_result_list` where matchid not in (select matchid from `breadt_match_odd_info`);'
+            sql = 'select matchid from `breadt_football_game_list` where matchid not in (select matchid from `breadt_match_odd_info`);'
             cursor.execute(sql)
             rows = cursor.fetchall()
 
@@ -61,13 +61,13 @@ class ZgzcwOddsInfoSpider(scrapy.Spider):
             tr_2 = trs[2]
             tr_3 = trs[3]
 
-            content = tr_3.xpath('.//span[@id="otherodds"]/text()').extract_first().replace('\n', '').replace('离散度%', '').replace('中足网方差%', '')
+            content = tr_3.xpath('.//span[@class="otherodds"]/text()').extract_first().replace('\n', '').replace('离散度', '').replace('中足网方差', '').replace('\%', '')
             arr = content.split('|')
             if len(arr) < 2:
                 return
-            
-            dispersions = arr[0].strip().split(' ')
-            stds = arr[1].strip().split(' ')
+
+            dispersions = arr[0].strip().split(u'\xa0')
+            stds = arr[1].strip().split(u'\xa0')
 
             yield FSpiderOddInfo(
                 matchid=response.meta['matchid'],
