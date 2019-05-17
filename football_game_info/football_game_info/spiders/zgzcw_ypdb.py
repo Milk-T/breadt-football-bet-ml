@@ -20,6 +20,8 @@ class ZgzcwYpdbSpider(scrapy.Spider):
             cursor.execute(sql)
             rows = cursor.fetchall()
 
+            print(len(rows))
+
             for row in rows:
                 yield scrapy.Request(
                     url=self.domain % (row['matchid']),

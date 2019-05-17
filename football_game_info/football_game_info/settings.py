@@ -22,7 +22,7 @@ NEWSPIDER_MODULE = 'football_game_info.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 4
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -52,11 +52,11 @@ DOWNLOAD_DELAY = 1
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    # 'football_game_info.middlewares.MyCustomDownloaderMiddleware': 543,
-#    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
-#    'football_game_info.middlewares.FootballGameInfoSpiderProxyMiddleware': 100,
-# }
+DOWNLOADER_MIDDLEWARES = {
+   # 'football_game_info.middlewares.MyCustomDownloaderMiddleware': 543,
+   'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 300,
+   'football_game_info.middlewares.FootballGameInfoSpiderProxyMiddleware': 100,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -92,6 +92,6 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 
-RETRY_ENABLED = True
-RETRY_TIMES = 3
-RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 408, 403]
+# RETRY_ENABLED = True
+# RETRY_TIMES = 3
+# RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 408, 403]
