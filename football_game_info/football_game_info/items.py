@@ -328,3 +328,18 @@ class FSpiderOddInfo(scrapy.Item):
     dispersion_win = scrapy.Field()
     dispersion_draw = scrapy.Field()
     dispersion_lose = scrapy.Field()
+
+class FSpiderOffsetOddInfo(scrapy.Item):
+    matchid = scrapy.Field()
+    company = scrapy.Field()
+    init_offset = scrapy.Field()
+    init_host = scrapy.Field()
+    init_visit = scrapy.Field()
+
+    new_offset = scrapy.Field()
+    new_host = scrapy.Field()
+    new_visit = scrapy.Field()
+
+    new_host_rate = scrapy.Field()
+    new_visit_rate = scrapy.Field()
+    
