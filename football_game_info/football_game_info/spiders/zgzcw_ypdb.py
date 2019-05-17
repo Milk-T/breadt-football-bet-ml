@@ -47,7 +47,7 @@ class ZgzcwYpdbSpider(scrapy.Spider):
             init_host = tds[2].xpath('.//text()').extract_first(),
             init_visit = tds[4].xpath('.//text()').extract_first(),
 
-            new_offset = tds[6].xpath('.//a/text()').extract_first(),
+            new_offset = tds[6].xpath('.//a/text()').extract_first().replace('↑', '').replace('↓', ''),
             new_host = tds[5].xpath('.//a/text()').extract_first().replace('↑', '').replace('↓', ''),
             new_visit = tds[7].xpath('.//a/text()').extract_first().replace('↑', '').replace('↓', ''),
             new_host_rate = tds[9].xpath('.//text()').extract_first(),
