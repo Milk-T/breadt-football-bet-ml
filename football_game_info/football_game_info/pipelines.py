@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from .items import FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo, FSpiderLotteryInfo, FSpiderLotteryPredictInfo, FSpiderRecentFeatureInfo, FSpiderOddInfo
+from .items import FSpiderOffsetOddInfo, FSpiderBriefInfo, FSpiderReferInfo, FSpiderPredictInfo, FSpiderFeatureInfo, FSpiderLotteryInfo, FSpiderLotteryPredictInfo, FSpiderRecentFeatureInfo, FSpiderOddInfo
 import pandas as pd
 import os
 import random
@@ -374,6 +374,18 @@ class FootballGameInfoPipeline(object):
                     item['max_init_win_odd'], item['max_init_draw_odd'], item['max_init_lose_odd'], item['max_new_win_odd'], item['max_new_draw_odd'], item['max_new_lose_odd'], item['max_new_win_rate'], item['max_new_draw_rate'], item['max_new_lose_rate'], item['max_new_win_kelly'], item['max_new_draw_kelly'], item['max_new_lose_kelly'], item['max_pay_rate'],
                     item['min_init_win_odd'], item['min_init_draw_odd'], item['min_init_lose_odd'], item['min_new_win_odd'], item['min_new_draw_odd'], item['min_new_lose_odd'], item['min_new_win_rate'], item['min_new_draw_rate'], item['min_new_lose_rate'], item['min_new_win_kelly'], item['min_new_draw_kelly'], item['min_new_lose_kelly'], item['min_pay_rate'],
                     item['std_win'], item['std_draw'], item['std_lose'], item['dispersion_win'], item['dispersion_draw'], item['dispersion_lose']
+                ))
+
+            self.connection.commit()
+        
+        elif isinstance(item, FSpiderOffsetOddInfo):
+            with self.connection.cursor() as cursor:
+                sql = " INSERT INTO `breadt_football_offset_info` (`matchid`,  `company`, `init_offset`, `init_host`,`init_visit`, `new_offset`,`new_host`,`new_visit`, `new_host_rate`, `new_visit_rate`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (
+                    item['matchid'], item['company'],
+                    item['init_offset'], item['init_host'], item['init_visit'], 
+                    item['new_offset'], item['new_host'], item['new_visit'], 
+                    item['new_host_rate'], item['new_visit_rate']
                 ))
 
             self.connection.commit()
